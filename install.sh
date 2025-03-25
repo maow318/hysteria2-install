@@ -23,25 +23,29 @@ check_command() {
     fi
 }
 
+# 检查命令是否存在的函数
+check_command_exists() {
+    if ! command -v $1 &> /dev/null; then
+        print_message "未检测到 $1 命令，正在安装..." "$YELLOW"
+        apt update && apt install -y $1
+        check_command "安装 $1"
+    fi
+}
+
 # 检查是否以 root 权限运行
 if [ "$EUID" -ne 0 ]; then 
     print_message "请使用 root 权限运行此脚本" "$RED"
     exit 1
 fi
 
-# 安装基本工具
-print_message "正在安装基本工具..." "$YELLOW"
-apt update
-apt install -y curl wget git nginx certbot python3-certbot-nginx cloudflared openssl ufw
-check_command "安装基本工具"
-
 # 检查系统要求
 print_message "正在检查系统要求..." "$YELLOW"
 
 # 检查是否为 Ubuntu 系统
 if ! command -v lsb_release &> /dev/null; then
-    print_message "未检测到 lsb_release 命令，请确保您使用的是 Ubuntu 系统" "$RED"
-    exit 1
+    print_message "未检测到 lsb_release 命令，正在安装..." "$YELLOW"
+    apt update && apt install -y lsb-release
+    check_command "安装 lsb-release"
 fi
 
 # 检查 Ubuntu 版本
@@ -52,13 +56,9 @@ if [[ "$UBUNTU_VERSION" != "focal" && "$UBUNTU_VERSION" != "jammy" ]]; then
 fi
 
 # 检查必要的命令
-REQUIRED_COMMANDS=("curl" "wget" "git" "nginx" "certbot" "openssl" "ufw")
+REQUIRED_COMMANDS=("curl" "wget" "git" "nginx" "certbot" "openssl" "ufw" "net-tools")
 for cmd in "${REQUIRED_COMMANDS[@]}"; do
-    if ! command -v $cmd &> /dev/null; then
-        print_message "未检测到 $cmd 命令，正在安装..." "$YELLOW"
-        apt update && apt install -y $cmd
-        check_command "安装 $cmd"
-    fi
+    check_command_exists "$cmd"
 done
 
 # 检查系统内存
@@ -158,4 +158,4 @@ print_message "正在清理临时文件..." "$YELLOW"
 rm -rf "$TEMP_DIR"
 check_command "清理临时文件"
 
-print_message "安装完成！" "$GREEN" 
+print_message "安装完成！" "$GREEN"
