@@ -1,12 +1,14 @@
 # Hysteria 2 一键安装脚本
 
-一个简单易用的 Hysteria 2 安装脚本，专为 Ubuntu/Debian 系统设计。
+一个简单易用的 Hysteria 2 安装脚本，专为 Ubuntu 系统设计。
 
 ## 系统要求
 
-- Ubuntu 20.04/22.04 或 Debian 系统
+- Ubuntu 20.04/22.04
 - 一个域名（需要提前解析到服务器IP）
 - Root 权限
+- 至少 512MB 内存
+- 至少 1GB 可用磁盘空间
 
 ## 快速开始
 
@@ -33,27 +35,32 @@ curl -fsSL https://raw.githubusercontent.com/maow318/hysteria2-install/main/inst
 
 ### 重要文件位置
 
-- 链接：`/etc/hysteria/hy2_link.txt`
-- 密码：`/etc/hysteria/password.txt`
-- 备份：
-  - 链接：`/root/hy2_link.txt`
-  - 密码：`/root/hysteria_password.txt`
+- 链接：`/root/hy2_link.txt`
+- 密码：`/root/hysteria_password.txt`
 
 ### 常用命令
 
 查看链接：
 ```bash
-cat /etc/hysteria/hy2_link.txt
+cat /root/hy2_link.txt
 ```
 
 查看密码：
 ```bash
-cat /etc/hysteria/password.txt
+cat /root/hysteria_password.txt
 ```
 
 查看服务状态：
 ```bash
 systemctl status hysteria
+```
+
+## 卸载方法
+
+如需卸载，请运行：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/maow318/hysteria2-install/main/uninstall.sh -o uninstall.sh && sudo bash uninstall.sh
 ```
 
 ## 注意事项
@@ -81,6 +88,7 @@ systemctl status hysteria
 - 🌐 自动申请和配置 SSL 证书
 - ⚡ 智能系统优化
 - 📝 自动保存所有配置
+- 🔄 支持一键卸载
 
 ## 技术支持
 
