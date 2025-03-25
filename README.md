@@ -1,83 +1,91 @@
-
 # Hysteria 2 一键安装脚本
 
-这是一个简单易用的 Hysteria 2 安装脚本，支持 Ubuntu 系统。
+一个简单易用的 Hysteria 2 安装脚本，专为 Ubuntu/Debian 系统设计。
 
-## 功能特点
+## 系统要求
 
-- 🚀 一键安装，无需复杂配置
-- 🔒 自动生成随机密码
-- 🌐 支持自定义域名
-- 🔐 自动配置 SSL 证书
-- ⚡ 系统优化，提升性能
-- 📝 自动保存配置信息
+- Ubuntu 20.04/22.04 或 Debian 系统
+- 一个域名（需要提前解析到服务器IP）
+- Root 权限
 
-## 使用方法
+## 快速开始
 
-### 1. 运行安装命令
+复制以下命令并运行：
 
 ```bash
-sudo bash <(curl -sSL https://raw.githubusercontent.com/maow318/hysteria2-install/580759d76a8ed3f6c49140fb8cb817cc15ff4ca9/install.sh)
+curl -fsSL https://raw.githubusercontent.com/maow318/hysteria2-install/580759d76a8ed3f6c49140fb8cb817cc15ff4ca9/install.sh -o install.sh && sudo bash install.sh
 ```
 
-### 2. 按提示操作
+## 安装步骤
 
-- 输入您的域名（例如：`hy2.example.com`）
-- 选择是否使用 Cloudflare（建议选择 `n`）
+1. **运行安装命令**
+2. **输入您的域名**（例如：`hy2.example.com`）
+3. **选择是否使用 Cloudflare**
+   - 建议选择：`n`（不使用）
+   - 如果选择 `y`，需要登录 Cloudflare 账号
 
-### 3. 安装完成
+## 安装完成后
 
-- 脚本会自动显示您的 Hysteria 2 链接
-- 链接和密码会自动保存到以下位置：
-  - 链接：`/etc/hysteria/hy2_link.txt`
-  - 密码：`/etc/hysteria/password.txt`
-  - 备份文件在 `/root` 目录下
+脚本会自动显示：
+- Hysteria 2 链接
+- 随机生成的密码
+- 所有配置文件位置
 
-## 查看信息
+### 重要文件位置
 
-安装完成后，您可以：
+- 链接：`/etc/hysteria/hy2_link.txt`
+- 密码：`/etc/hysteria/password.txt`
+- 备份：
+  - 链接：`/root/hy2_link.txt`
+  - 密码：`/root/hysteria_password.txt`
 
-1. 查看 Hysteria 2 链接：
+### 常用命令
+
+查看链接：
 ```bash
 cat /etc/hysteria/hy2_link.txt
 ```
 
-2. 查看密码：
+查看密码：
 ```bash
 cat /etc/hysteria/password.txt
 ```
 
-## 使用说明
-
-1. 复制显示的 Hysteria 2 链接
-2. 使用 Hysteria 2 客户端导入链接
-3. 开始使用！
+查看服务状态：
+```bash
+systemctl status hysteria
+```
 
 ## 注意事项
 
-- 请确保您的域名已经正确解析到服务器 IP
-- 请保存好您的密码和链接
-- 建议定期备份配置文件
+1. **域名设置**
+   - 确保域名已正确解析到服务器IP
+   - 使用二级域名更好（例如：`hy2.example.com`）
 
-## 常见问题
+2. **安全建议**
+   - 及时保存生成的链接和密码
+   - 定期备份配置文件
+   - 不要泄露您的链接和密码
 
-1. **安装失败怎么办？**
-   - 检查网络连接
-   - 确保使用 root 权限运行
-   - 检查域名是否正确解析
+3. **故障排除**
+   - 如果安装失败，检查：
+     - 网络连接
+     - 域名解析
+     - 系统版本
+   - 确保使用 Root 权限运行
 
-2. **找不到链接怎么办？**
-   - 运行 `cat /etc/hysteria/hy2_link.txt` 查看
-   - 或查看备份文件 `/root/hy2_link.txt`
+## 功能特点
 
-3. **忘记密码怎么办？**
-   - 运行 `cat /etc/hysteria/password.txt` 查看
-   - 或查看备份文件 `/root/hysteria_password.txt`
+- ✨ 全自动安装配置
+- 🔒 自动生成随机密码
+- 🌐 自动申请和配置 SSL 证书
+- ⚡ 智能系统优化
+- 📝 自动保存所有配置
 
 ## 技术支持
 
-如有问题，请提交 Issue 或联系技术支持。
+如遇问题，请提交 Issue 或联系技术支持。
 
-## 许可证
+## 开源协议
 
 MIT License
