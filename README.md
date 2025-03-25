@@ -13,7 +13,7 @@
 复制以下命令并运行：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/maow318/hysteria2-install/580759d76a8ed3f6c49140fb8cb817cc15ff4ca9/install.sh -o install.sh && sudo bash install.sh
+curl -fsSL https://raw.githubusercontent.com/maow318/hysteria2-install/main/install.sh -o install.sh && sudo bash install.sh
 ```
 
 ## 安装步骤
