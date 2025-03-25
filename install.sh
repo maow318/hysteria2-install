@@ -29,6 +29,12 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# 安装基本工具
+print_message "正在安装基本工具..." "$YELLOW"
+apt update
+apt install -y curl wget git nginx certbot python3-certbot-nginx cloudflared openssl ufw
+check_command "安装基本工具"
+
 # 检查系统要求
 print_message "正在检查系统要求..." "$YELLOW"
 
@@ -102,8 +108,23 @@ check_command "创建临时目录"
 
 # 下载安装脚本
 print_message "正在下载安装脚本..." "$YELLOW"
-curl -L -o "$TEMP_DIR/ubuntu_setup.sh" https://raw.githubusercontent.com/maow318/hysteria2-install/main/ubuntu_setup.sh
-check_command "下载安装脚本"
+MAX_RETRIES=3
+RETRY_COUNT=0
+while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+    if curl -L --connect-timeout 30 --max-time 60 -o "$TEMP_DIR/ubuntu_setup.sh" https://raw.githubusercontent.com/maow318/hysteria2-install/main/ubuntu_setup.sh; then
+        break
+    fi
+    RETRY_COUNT=$((RETRY_COUNT + 1))
+    if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+        print_message "下载失败，正在重试 ($RETRY_COUNT/$MAX_RETRIES)..." "$YELLOW"
+        sleep 5
+    fi
+done
+
+if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+    print_message "下载失败，已达到最大重试次数" "$RED"
+    exit 1
+fi
 
 # 检查下载的文件
 if [ ! -f "$TEMP_DIR/ubuntu_setup.sh" ]; then
