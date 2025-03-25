@@ -112,7 +112,7 @@ if [ ! -f "$TEMP_DIR/ubuntu_setup.sh" ]; then
 fi
 
 # 检查文件大小
-FILE_SIZE=$(stat -f%z "$TEMP_DIR/ubuntu_setup.sh")
+FILE_SIZE=$(stat -c%s "$TEMP_DIR/ubuntu_setup.sh" 2>/dev/null || stat -f%z "$TEMP_DIR/ubuntu_setup.sh")
 if [ "$FILE_SIZE" -lt 1000 ]; then
     print_message "警告：下载的文件可能不完整" "$YELLOW"
     read -p "是否继续？(y/n): " -n 1 -r
