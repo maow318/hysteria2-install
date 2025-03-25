@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set language to UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -29,6 +33,12 @@ if [[ "$UBUNTU_VERSION" != "focal" && "$UBUNTU_VERSION" != "jammy" ]]; then
     exit 1
 fi
 
+# Create necessary directories first
+print_message "Creating directories..." "$YELLOW"
+mkdir -p /etc/hysteria
+mkdir -p /var/www/html
+mkdir -p /etc/cloudflared
+
 # Get domain from user
 print_message "Please enter your domain (e.g., hy2.example.com):" "$YELLOW"
 read -r DOMAIN
@@ -51,6 +61,9 @@ fi
 
 # Generate and save password
 PASSWORD=$(generate_password)
+if [ ! -d "/etc/hysteria" ]; then
+    mkdir -p /etc/hysteria
+fi
 echo "Generated password: $PASSWORD" > /etc/hysteria/password.txt
 chmod 600 /etc/hysteria/password.txt
 
@@ -76,11 +89,6 @@ source ~/.bashrc
 # Install Hysteria 2
 print_message "Installing Hysteria 2..." "$YELLOW"
 bash <(curl -fsSL https://get.hy2.sh/)
-
-# Create necessary directories
-print_message "Creating directories..." "$YELLOW"
-mkdir -p /etc/hysteria
-mkdir -p /var/www/html
 
 # Create a simple index.html for masquerade
 cat > /var/www/html/index.html << 'EOL'
