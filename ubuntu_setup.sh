@@ -50,6 +50,20 @@ if [[ ! "$DOMAIN" =~ ^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9](?:\.[a-zA-Z0-9][a-zA-Z
     exit 1
 fi
 
+# 验证域名长度
+if [ ${#DOMAIN} -gt 253 ]; then
+    print_message "域名长度超过限制（最大253个字符）" "$RED"
+    exit 1
+fi
+
+# 验证每个部分长度
+for part in ${DOMAIN//./ }; do
+    if [ ${#part} -gt 63 ]; then
+        print_message "域名部分长度超过限制（最大63个字符）" "$RED"
+        exit 1
+    fi
+done
+
 # 询问是否使用 Cloudflare
 print_message "是否使用 Cloudflare？(y/n):" "$YELLOW"
 read -r USE_CLOUDFLARE
