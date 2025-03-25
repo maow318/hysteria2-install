@@ -108,7 +108,24 @@ ufw --force enable
 
 # 安装 acme.sh
 print_message "正在安装 acme.sh..." "$YELLOW"
-curl https://get.acme.sh | sh
+MAX_RETRIES=3
+RETRY_COUNT=0
+while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+    if curl -L --connect-timeout 30 --max-time 60 https://get.acme.sh | sh; then
+        break
+    fi
+    RETRY_COUNT=$((RETRY_COUNT + 1))
+    if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+        print_message "安装 acme.sh 失败，正在重试 ($RETRY_COUNT/$MAX_RETRIES)..." "$YELLOW"
+        sleep 5
+    fi
+done
+
+if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+    print_message "安装 acme.sh 失败，已达到最大重试次数" "$RED"
+    exit 1
+fi
+
 source ~/.bashrc
 
 # 注册 acme.sh 账号
@@ -120,7 +137,23 @@ print_message "正在注册 acme.sh 账号..." "$YELLOW"
 
 # 安装 Hysteria 2
 print_message "正在安装 Hysteria 2..." "$YELLOW"
-bash <(curl -fsSL https://get.hy2.sh/)
+MAX_RETRIES=3
+RETRY_COUNT=0
+while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+    if bash <(curl -fsSL --connect-timeout 30 --max-time 60 https://get.hy2.sh/); then
+        break
+    fi
+    RETRY_COUNT=$((RETRY_COUNT + 1))
+    if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+        print_message "安装 Hysteria 2 失败，正在重试 ($RETRY_COUNT/$MAX_RETRIES)..." "$YELLOW"
+        sleep 5
+    fi
+done
+
+if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+    print_message "安装 Hysteria 2 失败，已达到最大重试次数" "$RED"
+    exit 1
+fi
 
 # 创建伪装网站的 index.html
 print_message "正在创建伪装网站..." "$YELLOW"
@@ -400,4 +433,4 @@ net.ipv4.tcp_wmem = 4096 65536 16777216
 net.ipv4.tcp_congestion_control = bbr
 net.ipv4.tcp_fastopen = 3
 EOL
-sysctl -p /etc/sysctl.d/99-hysteria.conf
+sysctl -p /etc/sysctl.d/99-hysteria.conf 
