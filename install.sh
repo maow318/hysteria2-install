@@ -1,41 +1,48 @@
 #!/bin/bash
 
-# 颜色定义
+# Set language to UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-# 检查是否为 root 用户
+# Check if running as root
 if [ "$EUID" -ne 0 ]; then 
-    echo -e "${RED}请使用 root 权限运行此脚本${NC}"
-    echo -e "请使用: ${GREEN}sudo bash install.sh${NC}"
+    echo -e "${RED}Please run as root${NC}"
+    echo -e "Use: ${GREEN}sudo bash install.sh${NC}"
     exit 1
 fi
 
-# 创建临时目录
+# Create temporary directory
 TEMP_DIR=$(mktemp -d)
-cd $TEMP_DIR
+cd "$TEMP_DIR" || exit 1
 
-# 下载主安装脚本
-echo -e "${YELLOW}正在下载安装脚本...${NC}"
-curl -sSL https://raw.githubusercontent.com/hysteria2/hysteria2-install/main/ubuntu_setup.sh -o ubuntu_setup.sh
-
-# 检查下载是否成功
-if [ ! -f "ubuntu_setup.sh" ]; then
-    echo -e "${RED}下载失败，请检查网络连接${NC}"
+# Download main installation script
+echo -e "${YELLOW}Downloading installation script...${NC}"
+if ! curl -fsSL https://raw.githubusercontent.com/maow318/hysteria2-install/580759d76a8ed3f6c49140fb8cb817cc15ff4ca9/ubuntu_setup.sh -o ubuntu_setup.sh; then
+    echo -e "${RED}Failed to download script${NC}"
     exit 1
 fi
 
-# 添加执行权限
+# Check if file exists and is not empty
+if [ ! -f "ubuntu_setup.sh" ] || [ ! -s "ubuntu_setup.sh" ]; then
+    echo -e "${RED}Download failed or file is empty${NC}"
+    exit 1
+fi
+
+# Add execute permission
 chmod +x ubuntu_setup.sh
 
-# 运行主安装脚本
-echo -e "${GREEN}开始安装 Hysteria 2...${NC}"
-./ubuntu_setup.sh
+# Run main installation script
+echo -e "${GREEN}Starting Hysteria 2 installation...${NC}"
+bash ./ubuntu_setup.sh
 
-# 清理临时文件
-cd -
-rm -rf $TEMP_DIR
+# Clean up
+cd - || exit 1
+rm -rf "$TEMP_DIR"
 
-echo -e "${GREEN}安装完成！${NC}" 
+echo -e "${GREEN}Installation completed!${NC}"
