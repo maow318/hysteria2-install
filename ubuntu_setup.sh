@@ -44,9 +44,15 @@ mkdir -p /root/.acme.sh
 print_message "请输入您的域名 (例如: hy2.example.com):" "$YELLOW"
 read -r DOMAIN
 
-# 验证域名格式
-if [[ ! "$DOMAIN" =~ ^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9](?:\.[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])*$ ]]; then
-    print_message "域名格式无效，请确保域名只包含字母、数字、连字符和点" "$RED"
+# 简单的域名验证
+if [[ ! "$DOMAIN" =~ ^[a-zA-Z0-9.-]+$ ]]; then
+    print_message "域名格式无效，请确保域名只包含字母、数字、点和连字符" "$RED"
+    exit 1
+fi
+
+# 检查是否包含至少一个点号
+if [[ ! "$DOMAIN" =~ \. ]]; then
+    print_message "域名格式无效，必须包含至少一个点号" "$RED"
     exit 1
 fi
 
