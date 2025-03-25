@@ -98,8 +98,12 @@ apt install -y curl wget git nginx certbot python3-certbot-nginx cloudflared ope
 
 # 配置防火墙
 print_message "正在配置防火墙..." "$YELLOW"
+# 确保 SSH 端口开放
+ufw allow 22/tcp
+# 允许 Hysteria 2 需要的端口
 ufw allow 443/tcp
 ufw allow 80/tcp
+# 启用防火墙
 ufw --force enable
 
 # 安装 acme.sh
@@ -396,4 +400,4 @@ net.ipv4.tcp_wmem = 4096 65536 16777216
 net.ipv4.tcp_congestion_control = bbr
 net.ipv4.tcp_fastopen = 3
 EOL
-sysctl -p /etc/sysctl.d/99-hysteria.conf 
+sysctl -p /etc/sysctl.d/99-hysteria.conf
