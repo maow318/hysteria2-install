@@ -45,7 +45,7 @@ print_message "请输入您的域名 (例如: hy2.example.com):" "$YELLOW"
 read -r DOMAIN
 
 # 验证域名格式
-if [[ ! "$DOMAIN" =~ ^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9])*$ ]]; then
+if [[ ! "$DOMAIN" =~ ^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9](?:\.[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])*$ ]]; then
     print_message "域名格式无效，请确保域名只包含字母、数字、连字符和点" "$RED"
     exit 1
 fi
