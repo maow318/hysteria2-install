@@ -17,7 +17,7 @@
 ### 1. 运行安装命令
 
 ```bash
-sudo bash <(curl -sSL https://raw.githubusercontent.com/hysteria2/hysteria2-install/main/install.sh)
+sudo bash <(curl -sSL https://raw.githubusercontent.com/maow318/hysteria2-install/580759d76a8ed3f6c49140fb8cb817cc15ff4ca9/install.sh)
 ```
 
 ### 2. 按提示操作
