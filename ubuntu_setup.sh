@@ -107,6 +107,13 @@ print_message "正在安装 acme.sh..." "$YELLOW"
 curl https://get.acme.sh | sh
 source ~/.bashrc
 
+# 注册 acme.sh 账号
+print_message "正在注册 acme.sh 账号..." "$YELLOW"
+~/.acme.sh/acme.sh --register-account -m admin@${DOMAIN} || {
+    print_message "注册 acme.sh 账号失败" "$RED"
+    exit 1
+}
+
 # 安装 Hysteria 2
 print_message "正在安装 Hysteria 2..." "$YELLOW"
 bash <(curl -fsSL https://get.hy2.sh/)
@@ -272,8 +279,9 @@ fi
 
 # 获取 SSL 证书
 print_message "正在获取 SSL 证书..." "$YELLOW"
-~/.acme.sh/acme.sh --issue -d ${DOMAIN} --nginx || {
+~/.acme.sh/acme.sh --issue -d ${DOMAIN} --nginx --debug || {
     print_message "获取 SSL 证书失败" "$RED"
+    print_message "请检查域名是否正确解析到服务器 IP" "$YELLOW"
     exit 1
 }
 
