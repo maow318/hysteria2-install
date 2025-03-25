@@ -102,7 +102,7 @@ check_command "创建临时目录"
 
 # 下载安装脚本
 print_message "正在下载安装脚本..." "$YELLOW"
-curl -L -o "$TEMP_DIR/ubuntu_setup.sh" https://raw.githubusercontent.com/yourusername/hysteria2-install/main/ubuntu_setup.sh
+curl -L -o "$TEMP_DIR/ubuntu_setup.sh" https://raw.githubusercontent.com/maow318/hysteria2-install/main/ubuntu_setup.sh
 check_command "下载安装脚本"
 
 # 检查下载的文件
