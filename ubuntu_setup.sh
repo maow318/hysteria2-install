@@ -302,6 +302,9 @@ print_message "正在配置 WARP..." "$YELLOW"
 warp-cli register
 warp-cli set-mode proxy
 warp-cli set-proxy-port 40000
+# 连接到 WARP 网络并确保重启后自动连接
+warp-cli connect
+warp-cli enable-always-on
 
 # 启动服务
 print_message "正在启动服务..." "$YELLOW"

@@ -55,6 +55,11 @@ cat /root/hysteria_password.txt
 systemctl status hysteria
 ```
 
+查看 WARP 状态：
+```bash
+warp-cli status
+```
+
 ## 卸载方法
 
 如需卸载，请运行：
@@ -80,6 +85,7 @@ curl -fsSL https://raw.githubusercontent.com/maow318/hysteria2-install/main/unin
      - 域名解析
      - 系统版本
    - 确保使用 Root 权限运行
+   - 如果无法访问国际网络，运行 `warp-cli status` 检查是否已连接，如未连接，可执行 `warp-cli connect`
 
 ## 功能特点
 
